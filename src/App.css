@@ -1,0 +1,65 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #ffb764aa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.app-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto; /* 화면 가운데 정렬 */
+}
+
+/* 헤더 (상단 제목) */
+.app-header {
+  background-color: #f3d0a7; /* 메인 베이지보다 살짝 진한색 */
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* 메인 콘텐츠 영역 */
+.app-content {
+  background-color: #FFF; /* 흰색 배경 */
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+}
