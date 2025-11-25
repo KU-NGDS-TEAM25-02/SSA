@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+//import searchBarBg from './assets/search.png';
 
 // 1. App.jsx로부터 onSearch 라는 '기능(함수)'을 받아올 준비
 function StockSearch({ onSearch }) {
@@ -17,17 +18,44 @@ function StockSearch({ onSearch }) {
     setQuery(''); // 검색 후 입력창 비우기
   };
 
+  
   return (
     // 5. 폼(form) 태그로 input과 button을 감싸줌
-    <form onSubmit={handleSubmit} style={{ margin: '20px 0' }}>
+    <form onSubmit={handleSubmit} 
+    style={{ 
+        margin: '20px 0' , 
+        display : 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    }}>
       <input 
         type="text" 
         placeholder="종목 코드 또는 이름 입력"
         value={query} // 6. 입력창의 값은 'query' 상태와 일치시킴
         onChange={(e) => setQuery(e.target.value)} // 7. 글자 입력 시 'query' 상태 변경
-        style={{ padding: '8px', marginRight: '8px' }}
+        style={{ 
+            font : 'YeogiOttaeJalnan',
+            padding: '8px', 
+            fontSize: '16px',
+            border: '2px solid #E8DFCA',
+            borderRadius: '50px',
+            outline: 'none',
+            marginRight: '10px',
+            flex: 1,
+            maxWidth: '400px'
+         }}
       />
-      <button type="submit" style={{ padding: '8px' }}>검색</button>
+      <button type="submit" 
+      style={{ 
+        padding: '8px',
+        fontSize: '16px',
+        border: 'none',
+        backgroundColor: '#ffffffff',
+        color: '#fa8704ff',
+        borderRadious : '50px',
+        cursor : 'pointer',
+        fontWeight: 'bold',
+         }}>검색</button>
     </form>
   );
 }

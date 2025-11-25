@@ -1,7 +1,11 @@
+@import url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF.css");
+/* @import url('https://font.elice.io/css?family=Elice+Digital+Baeum" rel="stylesheet'); */
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "YeogiOttaeJalnan", sans-serif;
   line-height: 1.5;
-  font-weight: 400;
+  font-display: swap;
+  font-weight: normal;
 
   color-scheme: light dark;
   color: #ffffff;
@@ -11,6 +15,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body, input, button, textarea, select {
+  /* 2. CSS 파일에 정의된 폰트 이름('JalnanOTF')을 사용합니다 */
+  font-family: 'JalnanOTF', sans-serif;
+  font-weight: 400; /* 이 폰트는 굵기가 하나뿐이라 400이든 700이든 비슷하게 나옵니다 */
 }
 
 a {

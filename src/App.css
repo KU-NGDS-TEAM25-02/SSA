@@ -43,7 +43,8 @@
 
 .app-container {
   width: 90%;
-  max-width: 1200px;
+  max-width: 1400px;
+  min-width: 900px;
   margin: 0 auto; /* 화면 가운데 정렬 */
 }
 
@@ -58,8 +59,39 @@
 
 /* 메인 콘텐츠 영역 */
 .app-content {
-  background-color: #FFF; /* 흰색 배경 */
-  padding: 20px;
-  margin-top: 20px;
-  border-radius: 8px;
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* 2열 그리드 */
+    gap: 24px;
+    background-color: #FFF; /* 흰색 배경 */
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+.stats-grid {
+    display: grid;
+    /* 통계 항목들을 2열로 나눔 */
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 15px; /* (세로 간격) (가로 간격) */
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+    .stats-grid > div {
+        /* 통계 항목들이 줄바꿈 없이 잘 보이도록 */
+        white-space: nowrap;
+    }
+
+        .stats-grid > div > strong {
+            display: block; /* 라벨(Market Cap:)이 위에 오도록 */
+            color: #555;
+            font-size: 13px;
+        }
+
+.app-logo {
+  height: 300px; /* 로고 높이를 50px로 지정 (원하는 크기로 조절) */
+  /* width: 160px; */ /* 너비를 지정해도 됩니다 */
+  margin-bottom: 10px; /* 검색창과의 간격 */
 }
