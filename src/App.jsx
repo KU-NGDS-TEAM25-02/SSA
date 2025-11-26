@@ -1,3 +1,4 @@
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 import React, { useState } from 'react'; // useEffect, axios 삭제
 // import axios from 'axios'; // 삭제
 import './App.css'
