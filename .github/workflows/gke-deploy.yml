@@ -1,0 +1,92 @@
+name: CI/CD to GKE with Workload Identity Federation
+
+on:
+  push:
+    branches: ["main"]
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  DEPLOYMENT_NAME: ssa-frontend-deployment
+  CONTAINER_NAME: ssa-frontend-container
+
+  # Artifact Registry 정보
+  IMAGE_PATH: ${{ secrets.ARTIFACT_REGISTRY_REPO }}/ssa-frontend:${{ github.sha }}
+
+jobs:
+
+  #######################################################################
+  # CI: Build & Push
+  #######################################################################
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write   # WIF 반드시 필요
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 1. WIF 인증: access_token을 출력하도록 설정 (중요)
+      - name: Authenticate to Google Cloud (WIF)
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          token_format: "access_token"  # access token 직접 사용
+
+      # 2. Docker 로그인 (gcloud helper 사용하지 않음!)
+      #    * registry domain 은 secret에 domain만 저장
+      - name: Docker Login to Artifact Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.ARTIFACT_REGISTRY_DOMAIN }}
+          username: oauth2accesstoken
+          password: ${{ steps.auth.outputs.access_token }}
+
+      # 3. Docker 이미지 빌드
+      - name: Build Docker image
+        run: docker build -t $IMAGE_PATH .
+
+      # 4. Docker 푸시
+      - name: Push Docker image
+        run: docker push $IMAGE_PATH
+
+  #######################################################################
+  # CD: Deploy to GKE
+  #######################################################################
+  deploy:
+    name: Deploy to GKE
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 1. WIF 인증
+      - name: Authenticate to Google Cloud (WIF)
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      # 2. GKE 클러스터 인증
+      - name: Get GKE cluster credentials
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
+          location: ${{ secrets.GKE_REGION }}
+
+      # 3. 배포
+      - name: Deploy to GKE
+        run: |
+          kubectl set image deployment/$DEPLOYMENT_NAME \
+            $CONTAINER_NAME=$IMAGE_PATH --record
